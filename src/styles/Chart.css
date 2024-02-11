@@ -1,0 +1,4 @@
+.chart-container {
+    transition: width 10s ease-in-out;
+    overflow: hidden;
+  }

@@ -1,0 +1,10 @@
+/* CSS */
+.mapContainer {
+    width: 0%;
+    transition: width 2s ease-in-out;
+    animation: slide 2s forwards;
+}
+
+@keyframes slide {
+    100% { width: 100%; }
+}
