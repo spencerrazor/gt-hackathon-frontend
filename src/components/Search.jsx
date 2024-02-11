@@ -1,7 +1,11 @@
-import React, { useState, useEffect} from 'react';
+import React, { useState, useEffect, Suspense } from 'react';
 import { Dropdown } from 'flowbite-react';
+import { Suggestions } from './Suggestions';
+import { Scroll } from './Scroll';
 
 export const Search = ({ serviceClick, getInsurance }) => {
+    const [showScroll, setShowScroll] = useState(false);
+
     const insurancePlans = [
         { id: 1, name: 'BCBS' },
         { id: 2, name: 'MEDICARE' },
@@ -65,11 +69,16 @@ export const Search = ({ serviceClick, getInsurance }) => {
 
     const handleServiceClick = (event) => {
         serviceClick(event);
+        setShowScroll(true)
+    }
+
+    const handleScroll = () => {
+        setShowScroll(false);
     }
 
     return (
         <>
-        <form className="w-full z-0" onSubmit={handleSubmit}>
+        <form className="w-full h-1/5" onSubmit={handleSubmit}>
             <div className="flex">
                 <Dropdown
                     label=""
@@ -78,7 +87,7 @@ export const Search = ({ serviceClick, getInsurance }) => {
                         <button
                         id="dropdown-button"
                         data-dropdown-toggle="dropdown"
-                        className="flex-shrink-0 z-10 inline-flex items-center py-2.5 px-4 text-sm font-medium text-center text-white bg-[#39ace7] border border-gray-300 rounded-s-lg hover:bg-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:focus:ring-gray-700 dark:text-white dark:border-gray-600"
+                        className="flex-shrink-0 z-0 inline-flex items-center py-2.5 px-4 text-sm font-medium text-center text-white bg-[#39ace7] border border-gray-300 rounded-s-lg hover:bg-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:focus:ring-gray-700 dark:text-white dark:border-gray-600"
                         type="button"
                         >
                             {insurancePlan.name}
@@ -148,18 +157,25 @@ export const Search = ({ serviceClick, getInsurance }) => {
             </div>
         </form>
         <div className="basis-1/2">
-            {showServices && 
+            {showServices ? 
 
             <div class="grid grid-cols-3 gap-4">
-    {services.map((item, index) => (
-        <button key={index} href="#" className="block p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700" onClick={handleServiceClick} value="button1">
-            <p className="font-normal text-gray-700 dark:text-gray-400 text-left">{item.short_desc.replace(/\\n/g, "").replace(/"/g, '')}</p>
-            <h5 className="mb-2 text-sm font-bold tracking-tight text-gray-900 dark:text-white">Service Code: {item.cpt_code}</h5>
-        </button>
-    ))}
-    </div>
-}
+                {services.map((item, index) => (
+                    <button key={index} href="#" className="block p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700" onClick={handleServiceClick} value="button1">
+                        <p className="font-normal text-gray-700 dark:text-gray-400 text-left">{item.short_desc.replace(/\\n/g, "").replace(/"/g, '')}</p>
+                        <h5 className="mb-2 text-sm font-bold tracking-tight text-gray-900 dark:text-white">Service Code: {item.cpt_code}</h5>
+                    </button>
+                ))}
+            </div>
+            :  
+            <Suggestions />
+            }
         </div>
+
+            
+        {showScroll && 
+        <Scroll top={false} handleScroll={handleScroll}/>
+        } 
     </>
     );
 };

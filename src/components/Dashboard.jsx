@@ -8,7 +8,7 @@ export const Dashboard = () => {
   
   const [searchMade, setSearchMade] = useState(false);
   const [selectedService, setSelectedService] = useState(null);
-  const [selectedInsurance, setSelectedInsurance] = useState(null);
+  const [selectedInsurance, setSelectedInsurance] = useState({"insurance_name": 'No Insurance', "id": 30});
   const [selectedHospital, setSelectedHospital] = useState(null);
   const trigger = () => setSearchMade(true)
 
@@ -56,17 +56,15 @@ export const Dashboard = () => {
 return (
     <div className="flex flex-col h-screen">
     <Navbar />
-    <div className="flex-grow pt-[72px] md:pt-[48px] w-full overflow-auto">
-    <div className='basis-1 flex flex-col items-center mx-auto w-3/4 h-full gap-8 p-8 pt-16'>
+    <div className="flex-grow pt-[72px] md:pt-[48px] w-full">
+    <div className='basis-1 mx-auto w-3/4 h-full gap-8 p-8 pt-16'>
             <Search serviceClick={handleServiceClick}  getInsurance={getInsurance}/>
           </div>
-        {searchMade ?
+        {searchMade &&
         <div className='h-[75vh] flex flex-col lg:flex-row w-full'>
           <Map selectedService={selectedService} selectedInsurance={selectedInsurance} getHospital={getHospital} />
           {selectedHospital && <Chart selectedHospital={selectedHospital} selectedService={selectedService} selectedInsurance={selectedInsurance}/>}
         </div>
-        :
-        <div className="h-full">hi</div>
         }
     </div>
   </div>
