@@ -1,3 +1,5 @@
+import {Link} from "react-router-dom";
+
 export function Navbar() {
 
     return (
@@ -5,11 +7,11 @@ export function Navbar() {
             <nav
                 className="bg-white dark:bg-gray-900 fixed w-full z-20 top-0 start-0 border-b border-gray-200 dark:border-gray-600">
                 <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
-                    <a href="" className="flex items-center space-x-3 rtl:space-x-reverse">
+                    <Link href="" className="flex items-center space-x-3 rtl:space-x-reverse" to="/">
                         <img src="src/assets/ai-svg-3.svg" className="h-8" alt="Flowbite Logo"/>
                         <span
                             className="self-center text-2xl  whitespace-nowrap dark:text-white">LetsHealth</span>
-                    </a>
+                    </Link>
                     {/*<div className="flex md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">*/}
                     {/*    <button type="button"*/}
                     {/*            className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Get*/}
@@ -35,40 +37,17 @@ export function Navbar() {
                             {/*       aria-current="page">Home</a>*/}
                             {/*</li>*/}
                             <li>
-                                <a href="#"
-                                   className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Mission</a>
+                                <Link to={`/team`}
+                                   className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Team</Link>
                             </li>
                             <li>
-                                <a href="#"
-                                   className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Team</a>
+                                <Link to={`/mission`}
+                                   className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Mission</Link>
                             </li>
                         </ul>
                     </div>
                 </div>
             </nav>
-
-            {/*<nav className="bg-white w-full fixed z-10 shadow-md shadow-[rgba(0, 0, 0, 0.2)]">*/}
-            {/*    <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto">*/}
-            {/*        <h1>LetsHealth</h1>*/}
-            {/*        <div className="items-center justify-between hidden w-full md:flex md:w-auto md:order-1"*/}
-            {/*             id="navbar-sticky">*/}
-            {/*            <hr className="border-t-3 border-solid border-gray md:hidden"/>*/}
-            {/*            <ul className="flex flex-col font-medium md:p-0 mt-0 bg-gray-50 md:flex-row md:items-center md:bg-cgreen-300 md:space-x-8 md:mt-0 md:border-0 md:bg-white">*/}
-            {/*                <li className="w-full flex justify-left px-4 py-3 md:p-0">*/}
-            {/*                    <a href="/team" className="block md:bg-transparent md:p-0" aria-current="page">Team</a>*/}
-            {/*                </li>*/}
-            {/*                <hr className="border-t-3 border-solid border-gray md:hidden"/>*/}
-            {/*                <li className="w-full flex justify-left px-4 py-3 md:p-0">*/}
-            {/*                    <a href="https://blog.energy311.com/blog" className="block md:bg-transparent md:p-0"*/}
-            {/*                       aria-current="page">Data</a></li>*/}
-            {/*                <hr className="border-t-3 border-solid border-gray md:hidden"/>*/}
-            {/*                <li className="w-full flex justify-center px-4 py-3">*/}
-            {/*                    <a href="/contact" className="btn-green-long w-full md:w-32">Our A</a>*/}
-            {/*                </li>*/}
-            {/*            </ul>*/}
-            {/*        </div>*/}
-            {/*    </div>*/}
-            {/*</nav>*/}
 
         </>
     )

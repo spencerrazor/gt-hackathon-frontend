@@ -4,24 +4,29 @@ import {
     createBrowserRouter,
     RouterProvider,
 } from "react-router-dom";
-import {About} from "./components/About.jsx";
 import {Team} from "./components/Team.jsx";
+import {Mission} from "./components/Mission.jsx";
+import {Landing} from "./components/Landing.jsx";
 
 const App = () => {
 
     const router = createBrowserRouter([
         {
-            path: "/",
+            path: "/start",
             element: <Dashboard />,
         },
         {
-            path: "/about",
-            element: <div>Hello about</div>,
+            path: "/team",
+            element: <Team/>,
         },
         {
-            path: "/team",
-            element: <div>Hello about</div>,
+            path: "/mission",
+            element: <Mission/>,
         },
+        {
+            path: "/",
+            element: <Landing/>
+        }
     ]);
 
 // App.jsx
