@@ -35,7 +35,7 @@ export const Scroll = ({ top, handleScroll }) => {
     } else {
         return (
 <button
-    onClick={scrollToBottom}
+    onClick={() => {scrollToBottom(); handleScroll()}}
     type="button"
     name="scroll-bottom"
     aria-label="scroll-to-bottom"
