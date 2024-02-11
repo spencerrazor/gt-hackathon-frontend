@@ -1,39 +1,71 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect} from 'react';
 import { Dropdown } from 'flowbite-react';
 
-export const Search = ({ trigger }) => {
-    const insurancePlans = ['Plan1', 'Plan2', 'Plan3', 'Plan4', 'Plan5', 'Plan6', 'Plan7'];
+export const Search = ({ serviceClick, getInsurance }) => {
+    const insurancePlans = [
+        { id: 1, name: 'BCBS' },
+        { id: 2, name: 'MEDICARE' },
+        { id: 3, name: 'BC' },
+        { id: 4, name: 'CIGNA' },
+        { id: 5, name: 'PHCS' },
+        { id: 6, name: 'PEACHSTATE-CENTENE' },
+        { id: 7, name: 'HUMANA' },
+        { id: 8, name: 'AMBETTER' },
+        { id: 9, name: 'UHC' },
+        { id: 10, name: 'WELLCARE' },
+        { id: 11, name: 'KAISER' },
+        { id: 12, name: 'AMERIGROUP' },
+        { id: 13, name: 'MEDICAID' },
+        { id: 14, name: 'MULTI-PLAN' },
+        { id: 15, name: 'CARESOURCE' },
+        { id: 16, name: 'BLUE CROSS' },
+        { id: 17, name: 'CHAMPUS' },
+        { id: 18, name: 'CLOVER HEALTH' },
+        { id: 19, name: 'FIRST HLTH NTWK' },
+        { id: 20, name: 'PEACH STATE' },
+        { id: 21, name: 'SONDER HEALTH PLANS' },
+        { id: 22, name: 'PRUITT HEALTH' },
+        { id: 23, name: 'EON HEALTH' },
+        { id: 24, name: 'PPONEXT' },
+        { id: 25, name: 'UMR' },
+        { id: 26, name: 'TRICARE' },
+        { id: 27, name: 'VETERANS_ADMIN' },
+        { id: 28, name: 'PEACH STATE' },
+        { id: 29, name: 'BLUE_CROSS' },
+        { id: 30, name: 'NO INSURANCE' }
+      ];
 
     const [searchTerm, setSearchTerm] = useState('');
-    const [insurancePlan, setInsurancePlan] = useState('No insurance');
+    const [insurancePlan, setInsurancePlan] = useState({ id: 30, name: 'NO INSURANCE' });
     const [showServices, setShowServices] = useState(false);
+    const [services, setServices] = useState([])
 
     const handleSubmit = async (event) => {
         event.preventDefault();
 
-        // const response = await fetch('https://your-api-endpoint.com', {
-        //     method: 'POST',
-        //     headers: {
-        //         'Content-Type': 'application/json',
-        //     },
-        //     body: JSON.stringify({ searchTerm }),
-        // });
+        const response = await fetch('https://hacklytics-health-6fc4d8ad3bb8.herokuapp.com/search', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                "key": "1ec0fb84-220a-4287-a70b-13f887c902b1"
+            },
+            body: JSON.stringify({
+                "query": searchTerm
+            }),
+        });
 
-        // const data = await response.json();
-        // console.log(data);
+        const data = await response.json();
+
+        setServices(data.slice(0,3));
 
         setSearchTerm('');
         // trigger();
         setShowServices(true)
     };
 
-const handleServiceClick = (event) => {
-    event.preventDefault();
-    const buttonValue = event.target.value;
-    console.log(buttonValue);
-    trigger();
-};
-
+    const handleServiceClick = (event) => {
+        serviceClick(event);
+    }
 
     return (
         <>
@@ -49,7 +81,7 @@ const handleServiceClick = (event) => {
                         className="flex-shrink-0 z-10 inline-flex items-center py-2.5 px-4 text-sm font-medium text-center text-white bg-[#39ace7] border border-gray-300 rounded-s-lg hover:bg-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:focus:ring-gray-700 dark:text-white dark:border-gray-600"
                         type="button"
                         >
-                            {insurancePlan}{' '}
+                            {insurancePlan.name}
                             <svg
                                 className="w-2.5 h-2.5 ms-2.5"
                                 aria-hidden="true"
@@ -70,12 +102,12 @@ const handleServiceClick = (event) => {
                 >
                     <div className="h-[300px] overflow-y-scroll">
                         {insurancePlans.map((plan, index) => (
-                            <Dropdown.Item key={index} onClick={() => setInsurancePlan(plan)}>
+                            <Dropdown.Item key={index} onClick={() => {setInsurancePlan(plan); getInsurance(plan)}}>
                                 <a
                                     href="#"
                                     className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
                                     >
-                                    {plan}
+                                    {plan.name}
                                 </a>
                             </Dropdown.Item>
                         ))}
@@ -119,18 +151,12 @@ const handleServiceClick = (event) => {
             {showServices && 
 
             <div class="grid grid-cols-3 gap-4">
-    <button href="#" class="block p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700" onClick={handleServiceClick} value="button1">
-        <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Noteworthy technology acquisitions 2021</h5>
-        <p class="font-normal text-gray-700 dark:text-gray-400">Here are the biggest enterprise technology acquisitions of 2021 so far, in reverse chronological order.</p>
-    </button>
-    <button href="#" class="block p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700" onClick={handleServiceClick} value="button2">
-        <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Noteworthy technology acquisitions 2021</h5>
-        <p class="font-normal text-gray-700 dark:text-gray-400">Here are the biggest enterprise technology acquisitions of 2021 so far, in reverse chronological order.</p>
-    </button>
-    <button href="#" class="block p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700" onClick={handleServiceClick} value="button3">
-        <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Noteworthy technology acquisitions 2021</h5>
-        <p class="font-normal text-gray-700 dark:text-gray-400">Here are the biggest enterprise technology acquisitions of 2021 so far, in reverse chronological order.</p>
-    </button>
+    {services.map((item, index) => (
+        <button key={index} href="#" className="block p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700" onClick={handleServiceClick} value="button1">
+            <p className="font-normal text-gray-700 dark:text-gray-400 text-left">{item.short_desc.replace(/\\n/g, "").replace(/"/g, '')}</p>
+            <h5 className="mb-2 text-sm font-bold tracking-tight text-gray-900 dark:text-white">Service Code: {item.cpt_code}</h5>
+        </button>
+    ))}
     </div>
 }
         </div>

@@ -1,43 +1,69 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Loader } from "@googlemaps/js-api-loader";
 
-const Map = () => {
+const Map = ({ selectedService, selectedInsurance, getHospital}) => {
     const mapContainerRef = useRef(null);
     const [map, setMap] = useState(null);
     const [svgIcon, setSvgIcon] = useState(null);
     const [currentPosition, setCurrentPosition] = useState([33.77608671024301, -84.39760588902269]); // [latitude, longitude
-    const [markers, setMarkers] = useState([
-        { lat: 33.77608671024301, lng: -84.39760588902269 }, // New York
-        { lat: 33.77608671024301, lng: -84.387 }, // New York
-        // Add more markers as needed
-    ]);
+    const [markers, setMarkers] = useState([]);
     const [animationPerformed, setAnimationPerformed] = useState(false);
+
+    const getMarkers = async () => {
+        const response = await fetch('https://880b63b1-cb7a-455c-90c9-bbe602778714.mock.pstmn.io/locations/byCptAndInsurance', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                "key": "1ec0fb84-220a-4287-a70b-13f887c902b1"
+            },
+            body: JSON.stringify({
+                "cpt_codes": ["0035U"],
+                "user_lat": currentPosition[0],
+                "user_lon": currentPosition[1],
+                "insurance_id": selectedInsurance.id
+            }),
+        });
+
+        const data = await response.json();
+
+        const convertedData = data.map(item => ({
+            ...item,
+            longitude: parseFloat(item.longitude),
+            latitude: parseFloat(item.latitude)
+          }));
+
+        setMarkers(convertedData);
+    
+    }
+    
 
     useEffect(() => {
         const loader = new Loader({
             apiKey: "AIzaSyBmf9UybNnVrTeOR4queEJrTMbGgP3wbYI",
             version: "weekly",
         });
-
+        
         loader.load().then(async () => {
             const { Map } = await google.maps.importLibrary("maps");
-          
+            
             const map = new Map(mapContainerRef.current, {
-              center: { lat: currentPosition[0], lng: currentPosition[1] },
-              zoom: 12,
-              mapId: "7012c7fafd592a5",
-              streetViewControl: false,
-              mapTypeControl: false,
+                center: { lat: parseFloat(currentPosition[0]), lng: parseFloat(currentPosition[1]) },
+                zoom: 12,
+                mapId: "7012c7fafd592a5",
+                streetViewControl: false,
+                mapTypeControl: false,
             });
             setMap(map);
-
+            
             const watchID = navigator.geolocation.getCurrentPosition((position) => {
                 setCurrentPosition([position.coords.latitude, position.coords.longitude]);
                 map.panTo({ lat: position.coords.latitude, lng: position.coords.longitude });
-
+                
             });
         });
 
+        getMarkers();
+        
         // Clean up on unmount
         return () => {
             if (map) {
@@ -45,7 +71,7 @@ const Map = () => {
             }
         };
     }, []);
-
+    
     useEffect(() => {
         if (map) {
             
@@ -55,8 +81,9 @@ const Map = () => {
             };
             // Add a marker for each location in the markers array
             markers.forEach((location) => {
+                console.log(location)
                 const marker = new google.maps.Marker({
-                    position: location,
+                    position: { lat: location.latitude, lng: location.longitude},
                     map: map,
                     icon: svgIcon,
                     animation: google.maps.Animation.BOUNCE,
@@ -69,20 +96,20 @@ const Map = () => {
                                         <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/>
                                     </svg>
                                     <span class="sr-only">Info</span>
-                                    <h3 class="text-lg font-medium text-gray-800 dark:text-gray-300">This is a dark alert</h3>
+                                    <h3 class="text-lg font-medium text-gray-800 dark:text-gray-300">${location.hospital_name}</h3>
                                 </div>
                                 <div class="mt-2 mb-4 text-sm text-gray-800 dark:text-gray-300">
-                                    More info about this info dark goes here. This example text is going to run a bit longer so that you can see how spacing within an alert works with this kind of content.
+                                    The procedure costs \$${location.cost} at this hospital. 
                                 </div>
                                 <div class="flex">
                                     <button type="button" class="text-white bg-gray-700 hover:bg-gray-800 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-xs px-3 py-1.5 me-2 text-center inline-flex items-center dark:bg-gray-600 dark:hover:bg-gray-500 dark:focus:ring-gray-800">
                                         <svg class="me-2 h-3 w-3 dark:text-gray-300" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 14">
                                             <path d="M10 0C4.612 0 0 5.336 0 7c0 1.742 3.546 7 10 7 6.454 0 10-5.258 10-7 0-1.664-4.612-7-10-7Zm0 10a3 3 0 1 1 0-6 3 3 0 0 1 0 6Z"/>
                                         </svg>
-                                        View more
+                                        ${location.address}
                                     </button>
                                     <button type="button" class="text-gray-800 bg-transparent border border-gray-700 hover:bg-gray-800 hover:text-white focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-xs px-3 py-1.5 text-center dark:border-gray-600 dark:hover:bg-gray-600 dark:focus:ring-gray-800 dark:text-gray-300 dark:hover:text-white" data-dismiss-target="#alert-additional-content-5" aria-label="Close">
-                                        Dismiss
+                                        <a href="tel:${location.phone}">${location.phone}</a>
                                     </button>
                                 </div>
                             </div>`,
@@ -98,6 +125,7 @@ const Map = () => {
                     infoWindow.open(map, marker);
                     map.panTo(marker.getPosition());
                     map.setZoom(18);
+                    getHospital(location);
                 });
 
                 // Start bouncing
