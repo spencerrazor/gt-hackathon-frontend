@@ -10,14 +10,15 @@ const Map = ({ selectedService, selectedInsurance, getHospital}) => {
     const [animationPerformed, setAnimationPerformed] = useState(false);
 
     const getMarkers = async () => {
-        const response = await fetch('https://880b63b1-cb7a-455c-90c9-bbe602778714.mock.pstmn.io/locations/byCptAndInsurance', {
+        console.log(selectedService, selectedInsurance.id)
+        const response = await fetch('https://hacklytics-health-6fc4d8ad3bb8.herokuapp.com/locations/byCptAndInsurance', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
                 "key": "1ec0fb84-220a-4287-a70b-13f887c902b1"
             },
             body: JSON.stringify({
-                "cpt_codes": ["0035U"],
+                "cpt_codes": [selectedService],
                 "user_lat": currentPosition[0],
                 "user_lon": currentPosition[1],
                 "insurance_id": selectedInsurance.id
@@ -25,6 +26,8 @@ const Map = ({ selectedService, selectedInsurance, getHospital}) => {
         });
 
         const data = await response.json();
+
+        console.log(data)
 
         const convertedData = data.map(item => ({
             ...item,

@@ -8,16 +8,22 @@ export const Dashboard = () => {
   
   const [searchMade, setSearchMade] = useState(false);
   const [selectedService, setSelectedService] = useState(null);
-  const [selectedInsurance, setSelectedInsurance] = useState({"insurance_name": 'No Insurance', "id": 30});
+  const [selectedInsurance, setSelectedInsurance] = useState({"insurance_name": 'No Insurance Other', "id": 68});
   const [selectedHospital, setSelectedHospital] = useState(null);
   const trigger = () => setSearchMade(true)
 
-  const handleServiceClick = (event) => {
-    event.preventDefault();
-    const buttonValue = event.target.value;
-    setSelectedService(buttonValue)
-    trigger();
-  };
+  // const handleServiceClick = (event) => {
+  //   event.preventDefault();
+  //   const buttonValue = event.target.value;
+  //   console.log(event)
+  //   setSelectedService(buttonValue)
+  //   trigger();
+  // };
+
+  const getService = (service) => {
+    console.log(service)
+    setSelectedService(service)
+  }
 
   const getInsurance = (insurance) => {
     setSelectedInsurance(insurance)
@@ -58,9 +64,9 @@ return (
     <Navbar />
     <div className="flex-grow pt-[72px] md:pt-[48px] w-full">
     <div className='basis-1 mx-auto w-3/4 h-full gap-8 p-8 pt-16'>
-            <Search serviceClick={handleServiceClick}  getInsurance={getInsurance}/>
+            <Search getService={getService}  getInsurance={getInsurance}/>
           </div>
-        {searchMade &&
+        {selectedService &&
         <div className='h-[75vh] flex flex-col lg:flex-row w-full'>
           <Map selectedService={selectedService} selectedInsurance={selectedInsurance} getHospital={getHospital} />
           {selectedHospital && <Chart selectedHospital={selectedHospital} selectedService={selectedService} selectedInsurance={selectedInsurance}/>}

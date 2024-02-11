@@ -16,17 +16,17 @@ export function Chart({ selectedHospital, selectedService, selectedInsurance }) 
     });
 
     const getInsurancePrices = async () => {
-        const response = await fetch('https://c073afdb-38fe-472f-a04e-cca55e7f40a0.mock.pstmn.io/locations/byCptAndHospital', {
+        const response = await fetch('https://hacklytics-health-6fc4d8ad3bb8.herokuapp.com/locations/byCptAndHospital', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
                 "key": "1ec0fb84-220a-4287-a70b-13f887c902b1"
             },
             body: JSON.stringify({
-                "cpt_codes": ["0035U"],
+                "cpt_codes": [selectedService],
                 "user_lat": currentPosition[0],
                 "user_lon": currentPosition[1],
-                "insurance_id": selectedInsurance.id
+                "hospital_id": 2
             }),
         });
     
@@ -67,20 +67,20 @@ export function Chart({ selectedHospital, selectedService, selectedInsurance }) 
             newOptions = {
                 series: [{
                   name: 'Cost',
-                  data: r.data
+                  data: r.data.slice(0,10)
                 }],
                 xaxis: {
-                  categories: r.labels
+                  categories: r.labels.slice(0,10)
                 },
               };
           } else {
             newOptions = {
                 series: [{
                   name: 'Cost',
-                  data: chartData
+                  data: chartData.slice(0,10)
                 }],
                 xaxis: {
-                  categories: chartLabels
+                  categories: chartLabels.slice(0,10)
                 },
               };
           }

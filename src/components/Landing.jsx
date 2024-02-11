@@ -1,5 +1,6 @@
 import {Navbar} from "./Navbar.jsx";
 import {Link} from "react-router-dom";
+import landingImage from "../../public/landing-image-2.webp";
 
 
 export function Landing() {
@@ -26,7 +27,7 @@ export function Landing() {
                         </Link>
                     </div>
                     <div className="hidden lg:mt-0 lg:col-span-5 lg:flex relative bg-white bg-opacity-20 backdrop-filter backdrop-blur-2xl rounded shadow-lg">
-  <img src="src/assets/landing-image-2.webp" alt="mockup" />
+  <img src={landingImage} alt="mockup" />
 </div>
                 </div>
             </section>

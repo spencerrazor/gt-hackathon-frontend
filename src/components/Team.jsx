@@ -1,4 +1,5 @@
 import {Navbar} from "./Navbar.jsx";
+import teamImage from "../../public/team.png";
 
 export function Team() {
     return (
@@ -14,7 +15,7 @@ export function Team() {
                     </div>
                     <div className="flex justify-center items-center">
                         <img className="h-auto w-1/2 rounded-lg"
-                             src="src/assets/team.png" alt=""/>
+                             src={teamImage}/>
                     </div>
 
                     {/*<div className="grid items-center justify-center grid-cols-5 gap-4">*/}
